@@ -3,7 +3,7 @@ Adds noticeable pips to the empowered player castbar of Unhalted Unit Frames.
 
 This WoW addon provides a simple and lightweight method of adding more visible
 pips to the empowered player castbar of Unhalted Unit Frames.  No customization
-isprovided, other than editing the PipsUUF.lua file, as illustrated below.
+is provided, other than editing the PipsUUF.lua file, as illustrated below.
 
 ```
 local PIP_WIDTH = 2           -- Width of each pip

@@ -1,11 +1,11 @@
 ## Interface: 120000, 120001
-## Title: Pips UUF
+## Title: |cff00CED1Pips UUF|r
 ## Version: 1.0.0
 ## Notes: Adds noticeable pips to the empowered player castbar of Unhalted Unit Frames.
 ## Author: Jokey Smurf
 ## IconTexture: Interface\AddOns\PipsUUF\Media\logo
 ## RequiredDeps: UnhaltedUnitFrames
 
-## Category-enUS: Trebloh
+## Category-enUS: Smurf
 
 PipsUUF.lua
