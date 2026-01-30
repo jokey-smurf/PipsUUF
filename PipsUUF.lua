@@ -1,24 +1,27 @@
 local addonName, ns = ...
 
 local PIP_WIDTH = 2           -- Width of each pip
-local PIP_LAST_WIDTH = 5      -- Width of the last pip
+local PIP_LAST_WIDTH = 3      -- Width of the last pip
 local PIP_COLOR = { 1, 1, 1 } -- Color of each pip
 local PIP_ALPHA = 1           -- Alpha of each pip
 
--- Addon name
+-- Colored addon name
 local function AddonName(color)
     local color = color or "00FF00"
     return string.format("|cff%s%s|r", color, addonName)
 end
 
+-- print() with addon name
 local function Msg(msg, value)
     value = value or ""
     print(AddonName() .. ": " .. msg .. " " .. value)
 end
 
+-- login message
 local _version = C_AddOns.GetAddOnMetadata(addonName, "Version") or ""
 Msg("Version", version)
 
+-- find oUF
 local def = C_AddOns.GetAddOnMetadata('UnhaltedUnitFrames', 'X-oUF') or "OOPS"
 local oUF = _G[def]
 if not oUF then
@@ -26,11 +29,13 @@ if not oUF then
     return
 end
 
+-- return empowered spell cast information
 local function IsEmpoweredSpellCast()
     local _, _, _, _, _, _, _, _, isEmpowered, numEmpowerStages = UnitChannelInfo('player')
     return isEmpowered, numEmpowerStages
 end
 
+-- create a pip, called once for each pip during the life of the castbar
 local function CreatePip(element, stage)
     -- Msg("CreatePip ", stage)
     local texture = element:CreateTexture(nil, 'OVERLAY', 'CastingBarFrameStagePipTemplate', 1)
@@ -38,17 +43,24 @@ local function CreatePip(element, stage)
     local height = element:GetHeight() * 0.9
     texture:SetSize(PIP_WIDTH, height)
     local r, g, b = unpack(PIP_COLOR)
-    texture:SetColorTexture(r, g, b, PIP_ALPHA) -- (stage == element.lastStage) and 0 or PIP_ALPHA)
+    texture:SetColorTexture(r, g, b, PIP_ALPHA)
 
+    -- Called by PixelUtil.SetSize for scaling
+    texture.GetEffectiveScale = function(self)
+        return self:GetScale() * UIParent:GetScale()
+    end
     return texture
 end
 
+-- called once all pips have been displayed,
+-- adjust the size and visiblity
 local function PostUpdatePips(castbar)
     if not castbar.Pips then return end
     local isEmpowered, stageCount = IsEmpoweredSpellCast()
     if not isEmpowered then
         return
     end
+
     -- Msg("StageCount", stageCount)
     for i = 1, stageCount + 1 do
         -- local castbar = playerFrame.Castbar
@@ -56,7 +68,8 @@ local function PostUpdatePips(castbar)
         if not pip then return end
 
         -- make the last empowered pip bigger
-        pip:SetSize((i == stageCount) and PIP_LAST_WIDTH or PIP_WIDTH, pip:GetHeight())
+        PixelUtil.SetSize(pip, (i == stageCount) and PIP_LAST_WIDTH or PIP_WIDTH, pip:GetHeight())
+
         -- ouf shows the pip at the end of the castbar, hide it
         pip:SetShown(i ~= stageCount + 1)
     end
@@ -81,7 +94,7 @@ end
 hooksecurefunc(oUF, "Spawn", function(frameOrUnit, unitOrStyle)
     -- print("PIP: Spawn")
     C_Timer.After(1, function()
-        -- Scan all oUF objects to find the one just created, a bit superfulous, but atan
+        -- Scan all oUF objects to find the one just created, a bit superfulous, but at
         -- least its only at startup
         for _, frame in ipairs(oUF.objects) do
             -- Msg(frame.style)
@@ -106,6 +119,7 @@ hooksecurefunc(oUF, "Spawn", function(frameOrUnit, unitOrStyle)
     end)
 end)
 
+-- not much to see here
 SLASH_PIPSUUF1 = "/pips"
 SlashCmdList["PIPSUUF"] = function(msg)
     Msg("Version", _version)
