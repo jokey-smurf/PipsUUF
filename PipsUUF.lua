@@ -12,14 +12,13 @@ local function AddonName(color)
 end
 
 -- print() with addon name
-local function Msg(msg, value)
-    value = value or ""
-    print(AddonName() .. ": " .. msg .. " " .. value)
+local function Msg(msg, ...)
+    print(AddonName() .. ": " .. msg, ...)
 end
 
 -- login message
 local _version = C_AddOns.GetAddOnMetadata(addonName, "Version") or ""
-Msg("Version", version)
+Msg("Version", _version)
 
 -- find oUF
 local def = C_AddOns.GetAddOnMetadata('UnhaltedUnitFrames', 'X-oUF') or "OOPS"
@@ -92,13 +91,13 @@ end
 
 -- Hook oUF spawn to look at each frame
 hooksecurefunc(oUF, "Spawn", function(frameOrUnit, unitOrStyle)
-    -- print("PIP: Spawn")
-    C_Timer.After(1, function()
-        -- Scan all oUF objects to find the one just created, a bit superfulous, but at
-        -- least its only at startup
-        for _, frame in ipairs(oUF.objects) do
-            -- Msg(frame.style)
-            if frame.style and frame.style == "UUF_Player" and not frame.hooked then
+    -- Msg("Spawn", frameOrUnit, unitOrStyle)
+    if unitOrStyle and unitOrStyle == "player" then
+        -- let the frame finish cooking
+        C_Timer.After(1, function()
+            local frame = _G["UUF_Player"]
+            assert(frame, "Player frame not found") -- more than likely, the name changed
+            if frame and not frame.hooked then
                 -- Msg("Hooked player frame")
                 frame.hooked = true
                 SetPipHook(frame)
@@ -106,7 +105,7 @@ hooksecurefunc(oUF, "Spawn", function(frameOrUnit, unitOrStyle)
                 -- Hook EnableElement for the player frame in case a castbar gets added later
                 -- Only needed for toggling on and off the castbar
                 hooksecurefunc(getmetatable(frame).__index, "EnableElement", function(frame, element)
-                    -- print("PIP: Enabled Element callled" .. element)
+                    -- Msg("PIP: Enabled Element callled", element)
                     if element == "Castbar" and frame.Castbar and not frame.Castbar.hooked then
                         -- The castbar was just added to an existing frame
                         -- Msg("Delayed castbar found")
@@ -115,8 +114,8 @@ hooksecurefunc(oUF, "Spawn", function(frameOrUnit, unitOrStyle)
                     end
                 end)
             end
-        end
-    end)
+        end)
+    end
 end)
 
 -- not much to see here
