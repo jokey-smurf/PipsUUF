@@ -16,3 +16,5 @@ local PIP_LAST_WIDTH = 3      -- Width of the last pip
 local PIP_COLOR = { 1, 1, 1 } -- Color of each pip
 local PIP_ALPHA = 1           -- Alpha of each pip
 ```
+
+Coded with 100% __VIBE__
