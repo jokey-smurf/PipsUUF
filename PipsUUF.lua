@@ -30,11 +30,14 @@ end
 
 -- return empowered spell cast information
 local function IsEmpoweredSpellCast()
-    local _, _, _, _, _, _, _, _, isEmpowered, numEmpowerStages = UnitChannelInfo('player')
+    local name, _, _, _, _, _, _, _, isEmpowered, numEmpowerStages = UnitChannelInfo('player')
+    if not name then
+        return false, 0
+    end
     return isEmpowered, numEmpowerStages
 end
 
--- create a pip, called once for each pip during the life of the castbar
+-- create a pip, called once for each pip during the life of the castbar during empowered casting
 local function CreatePip(element, stage)
     -- Msg("CreatePip ", stage)
     local texture = element:CreateTexture(nil, 'OVERLAY', 'CastingBarFrameStagePipTemplate', 1)
