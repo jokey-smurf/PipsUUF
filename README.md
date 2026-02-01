@@ -7,7 +7,7 @@ the height of the pip and changing its color to white.  I also slightly increase
 width of the last pip to make it more noticeable.
 
 In the spirit of keeping this addon simple and lightweight, there is no UI for 
-customization.  However, one can edit the values at the top the PipsUUF.lua file, 
+customization.  However, one can edit the values at the top of the PipsUUF.lua file, 
 as illustrated below.
 
 ```
