@@ -17,4 +17,4 @@ local PIP_COLOR = { 1, 1, 1 } -- Color of each pip
 local PIP_ALPHA = 1           -- Alpha of each pip
 ```
 
-Coded with 100% __VIBE__
+Coded with 100% **VIBE**
