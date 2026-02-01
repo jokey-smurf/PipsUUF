@@ -1,9 +1,9 @@
 {
   "releases": [
     {
-      "name": "Spell Density",
+      "name": "Pips UUF",
       "version": "v1.0.0",
-      "filename": "SpellDensity-v1.0.0.zip",
+      "filename": "PipsUUF-v1.0.0.zip",
       "nolib": false,
       "metadata": [
         { "flavor": "mainline", "interface": 120001 },
