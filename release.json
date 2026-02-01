@@ -1,0 +1,14 @@
+{
+  "releases": [
+    {
+      "name": "Spell Density",
+      "version": "v1.0.0",
+      "filename": "SpellDensity-v1.0.0.zip",
+      "nolib": false,
+      "metadata": [
+        { "flavor": "mainline", "interface": 120001 },
+        { "flavor": "mainline", "interface": 120000 }
+      ]
+    }
+  ]
+}
